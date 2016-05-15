@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <form method="post" class="lost_reset_password">
 
-	<?php if( 'lost_password' === $args['form'] ) : ?>
+	<?php if ( 'lost_password' === $args['form'] ) : ?>
 
 		<p><?php echo apply_filters( 'woocommerce_lost_password_message', __( 'Lost your password? Please enter your username or email address. You will receive a link to create a new password via email.', 'woocommerce' ) ); ?></p>
 
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<?php else : ?>
 
-		<p><?php echo apply_filters( 'woocommerce_reset_password_message', __( 'Enter a new password below.', 'woocommerce') ); ?></p>
+		<p><?php echo apply_filters( 'woocommerce_reset_password_message', __( 'Enter a new password below.', 'woocommerce' ) ); ?></p>
 
 		<p class="form-row form-row-first">
 			<label for="password_1"><?php _e( 'New password', 'woocommerce' ); ?> <span class="required">*</span></label>
