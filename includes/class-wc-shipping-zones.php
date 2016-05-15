@@ -21,10 +21,10 @@ class WC_Shipping_Zones {
 	 * @since 2.6.0
 	 * @return array of arrays
 	 */
-    public static function get_zones() {
+	public static function get_zones() {
 		global $wpdb;
 
-        $raw_zones = $wpdb->get_results( "SELECT zone_id, zone_name, zone_order FROM {$wpdb->prefix}woocommerce_shipping_zones order by zone_order ASC;" );
+		$raw_zones = $wpdb->get_results( "SELECT zone_id, zone_name, zone_order FROM {$wpdb->prefix}woocommerce_shipping_zones order by zone_order ASC;" );
 		$zones     = array();
 
 		foreach ( $raw_zones as $raw_zone ) {
@@ -35,12 +35,12 @@ class WC_Shipping_Zones {
 		}
 
 		return $zones;
-    }
+	}
 
 	/**
 	 * Get shipping zone using it's ID
 	 * @since 2.6.0
-	 * @param int $zone_id
+	 * @param  int                   $zone_id
 	 * @return WC_Shipping_Zone|bool
 	 */
 	public static function get_zone( $zone_id ) {
@@ -50,8 +50,8 @@ class WC_Shipping_Zones {
 	/**
 	 * Get shipping zone by an ID.
 	 * @since 2.6.0
-	 * @param string $by zone_id or instance_id
-	 * @param int $id
+	 * @param  string                $by zone_id or instance_id
+	 * @param  int                   $id
 	 * @return WC_Shipping_Zone|bool
 	 */
 	public static function get_zone_by( $by = 'zone_id', $id = 0 ) {
@@ -82,7 +82,7 @@ class WC_Shipping_Zones {
 	/**
 	 * Get shipping zone using it's ID
 	 * @since 2.6.0
-	 * @param int $zone_id
+	 * @param  int                      $zone_id
 	 * @return WC_Shipping_Meethod|bool
 	 */
 	public static function get_shipping_method( $instance_id ) {
@@ -106,10 +106,10 @@ class WC_Shipping_Zones {
 	 * @param int $zone_id
 	 * @since 2.6.0
 	 */
-    public static function delete_zone( $zone_id ) {
+	public static function delete_zone( $zone_id ) {
 		$zone = new WC_Shipping_Zone( $zone_id );
 		$zone->delete();
-    }
+	}
 
 	/**
 	 * Get postcode wildcards in array format.
@@ -119,8 +119,8 @@ class WC_Shipping_Zones {
 	 * @since 2.6.0
 	 * @access private
 	 *
-	 * @param  string  $postcode array of values
-	 * @return string[] Array of postcodes with wildcards
+	 * @param  string   $postcode array of values
+	 * @return string[]           Array of postcodes with wildcards
 	 */
 	private static function _get_wildcard_postcodes( $postcode ) {
 		$postcodes         = array( '*', strtoupper( $postcode ), strtoupper( $postcode ) . '*' );
@@ -129,7 +129,7 @@ class WC_Shipping_Zones {
 
 		for ( $i = 0; $i < $postcode_length; $i ++ ) {
 			$wildcard_postcode = substr( $wildcard_postcode, 0, -1 );
-			$postcodes[] = $wildcard_postcode . '*';
+			$postcodes[]       = $wildcard_postcode . '*';
 		}
 		return $postcodes;
 	}
@@ -138,7 +138,7 @@ class WC_Shipping_Zones {
 	 * Find a matching zone for a given package.
 	 * @since  2.6.0
 	 * @uses   wc_make_numeric_postcode()
-	 * @param  object $package
+	 * @param  object           $package
 	 * @return WC_Shipping_Zone
 	 */
 	public static function get_zone_matching_package( $package ) {
@@ -155,7 +155,7 @@ class WC_Shipping_Zones {
 		if ( false === $matching_zone_id ) {
 
 			// Work out criteria for our zone search
-			$criteria = array();
+			$criteria   = array();
 			$criteria[] = $wpdb->prepare( "( ( location_type = 'country' AND location_code = %s )", $country );
 			$criteria[] = $wpdb->prepare( "OR ( location_type = 'state' AND location_code = %s )", $country . ':' . $state );
 			$criteria[] = $wpdb->prepare( "OR ( location_type = 'continent' AND location_code = %s ) )", $continent );
@@ -202,7 +202,7 @@ class WC_Shipping_Zones {
 				$do_not_match = array_unique( array_diff( $zone_ids_with_postcode_rules, $zone_id_matches ) );
 
 				if ( $do_not_match ) {
-					$criteria[] = "AND zones.zone_id NOT IN (" . implode( ',', $do_not_match ) . ")";
+					$criteria[] = 'AND zones.zone_id NOT IN (' . implode( ',', $do_not_match ) . ')';
 				}
 			}
 
@@ -210,13 +210,14 @@ class WC_Shipping_Zones {
 			$matching_zone_id = $wpdb->get_var( "
 				SELECT zones.zone_id FROM {$wpdb->prefix}woocommerce_shipping_zones as zones
 				LEFT OUTER JOIN {$wpdb->prefix}woocommerce_shipping_zone_locations as locations ON zones.zone_id = locations.zone_id
-				WHERE " . implode( ' ', $criteria ) . "
+				WHERE " . implode( ' ', $criteria ) . '
 				ORDER BY zone_order ASC LIMIT 1
-			" );
+			' );
 
 			wp_cache_set( $cache_key, $matching_zone_id, 'shipping_zones' );
 		}
 
 		return new WC_Shipping_Zone( $matching_zone_id ? $matching_zone_id : 0 );
 	}
+
 }
