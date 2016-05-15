@@ -111,7 +111,7 @@ class WC_Shipping_Legacy_Flat_Rate extends WC_Shipping_Method {
 
 	/**
 	 * Work out fee (shortcode).
-	 * @param  array $atts
+	 * @param  array  $atts
 	 * @return string
 	 */
 	public function fee( $atts ) {
@@ -232,7 +232,7 @@ class WC_Shipping_Legacy_Flat_Rate extends WC_Shipping_Method {
 
 	/**
 	 * Finds and returns shipping classes and the products with said class.
-	 * @param mixed $package
+	 * @param  mixed $package
 	 * @return array
 	 */
 	public function find_shipping_classes( $package ) {
@@ -259,7 +259,7 @@ class WC_Shipping_Legacy_Flat_Rate extends WC_Shipping_Method {
 	 * @deprecated 2.4.0
 	 *
 	 * Additonal rates defined like this:
-	 * 	Option Name | Additional Cost [+- Percents%] | Per Cost Type (order, class, or item).
+	 * Option Name | Additional Cost [+- Percents%] | Per Cost Type (order, class, or item).
 	 */
 	public function calculate_extra_shipping( $method, $rate, $package ) {
 		if ( $this->options ) {
@@ -309,19 +309,19 @@ class WC_Shipping_Legacy_Flat_Rate extends WC_Shipping_Method {
 	 * @deprecated 2.4.0
 	 * @param  string $cost_string
 	 * @param  string $type
-	 * @param  array $package
+	 * @param  array  $package
 	 * @return float
 	 */
 	public function get_extra_cost( $cost_string, $type, $package ) {
 		$cost         = $cost_string;
 		$cost_percent = false;
 		$pattern      =
-			'/' .           // start regex
+			'/' . // start regex
 			'(\d+\.?\d*)' . // capture digits, optionally capture a `.` and more digits
-			'\s*' .         // match whitespace
-			'(\+|-)' .      // capture the operand
-			'\s*'.          // match whitespace
-			'(\d+\.?\d*)'.  // capture digits, optionally capture a `.` and more digits
+			'\s*' . // match whitespace
+			'(\+|-)' . // capture the operand
+			'\s*' . // match whitespace
+			'(\d+\.?\d*)' . // capture digits, optionally capture a `.` and more digits
 			'\%/';          // match the percent sign & end regex
 		if ( preg_match( $pattern, $cost_string, $this_cost_matches ) ) {
 			$cost_operator = $this_cost_matches[2];
@@ -340,7 +340,7 @@ class WC_Shipping_Legacy_Flat_Rate extends WC_Shipping_Method {
 			switch ( $type ) {
 				case 'class' :
 					$shipping_classes = $this->find_shipping_classes( $package );
-					foreach ( $shipping_classes as $shipping_class => $items ){
+					foreach ( $shipping_classes as $shipping_class => $items ) {
 						foreach ( $items as $item_id => $values ) {
 							$cost = $this->calc_percentage_adjustment( $cost, $cost_percent, $cost_operator, $values['line_total'] );
 						}
@@ -360,4 +360,5 @@ class WC_Shipping_Legacy_Flat_Rate extends WC_Shipping_Method {
 		}
 		return $cost;
 	}
+
 }

@@ -40,8 +40,8 @@ abstract class WC_Payment_Gateway_CC extends WC_Payment_Gateway {
 	 * @since 2.6.0
 	 */
 	public function form() {
-		$html           = '';
-		$fields         = array();
+		$html   = '';
+		$fields = array();
 
 		$cvc_field = '<p class="form-row form-row-last">
 			<label for="' . esc_attr( $this->id ) . '-card-cvc">' . __( 'Card Code', 'woocommerce' ) . ' <span class="required">*</span></label>

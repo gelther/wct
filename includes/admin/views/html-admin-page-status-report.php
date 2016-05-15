@@ -54,7 +54,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<tr>
 			<td data-export-label="WP Version"><?php _e( 'WP Version', 'woocommerce' ); ?>:</td>
 			<td class="help"><?php echo wc_help_tip( __( 'The version of WordPress installed on your site.', 'woocommerce' ) ); ?></td>
-			<td><?php bloginfo('version'); ?></td>
+			<td><?php bloginfo( 'version' ); ?></td>
 		</tr>
 		<tr>
 			<td data-export-label="WP Multisite"><?php _e( 'WP Multisite', 'woocommerce' ); ?>:</td>
@@ -164,7 +164,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					} else {
 						_e( 'N/A', 'woocommerce' );
 					}
-				  ?></td>
+					?></td>
 			</tr>
 			<tr>
 				<td data-export-label="SUHOSIN Installed"><?php _e( 'SUHOSIN Installed', 'woocommerce' ); ?>:</td>
@@ -265,7 +265,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			}
 
 			// WP Remote Post Check.
-			$posting['wp_remote_post']['name'] = __( 'Remote Post', 'woocommerce');
+			$posting['wp_remote_post']['name'] = __( 'Remote Post', 'woocommerce' );
 			$posting['wp_remote_post']['help'] = wc_help_tip( __( 'PayPal uses this method of communicating when sending back transaction information.', 'woocommerce' ) );
 
 			$response = wp_safe_remote_post( 'https://www.paypal.com/cgi-bin/webscr', array(
@@ -273,14 +273,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 				'user-agent'  => 'WooCommerce/' . WC()->version,
 				'httpversion' => '1.1',
 				'body'        => array(
-					'cmd'    => '_notify-validate'
+					'cmd' => '_notify-validate'
 				)
 			) );
 
 			if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 				$posting['wp_remote_post']['success'] = true;
 			} else {
-				$posting['wp_remote_post']['note']    = __( 'wp_remote_post() failed. PayPal IPN won\'t work with your server. Contact your hosting provider.', 'woocommerce' );
+				$posting['wp_remote_post']['note'] = __( 'wp_remote_post() failed. PayPal IPN won\'t work with your server. Contact your hosting provider.', 'woocommerce' );
 				if ( is_wp_error( $response ) ) {
 					$posting['wp_remote_post']['note'] .= ' ' . sprintf( __( 'Error: %s', 'woocommerce' ), wc_clean( $response->get_error_message() ) );
 				} else {
@@ -290,7 +290,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			}
 
 			// WP Remote Get Check.
-			$posting['wp_remote_get']['name'] = __( 'Remote Get', 'woocommerce');
+			$posting['wp_remote_get']['name'] = __( 'Remote Get', 'woocommerce' );
 			$posting['wp_remote_get']['help'] = wc_help_tip( __( 'WooCommerce plugins may use this method of communication when checking for plugin updates.', 'woocommerce' ) );
 
 			$response = wp_safe_remote_get( 'http://www.woothemes.com/wc-api/product-key-api?request=ping&network=' . ( is_multisite() ? '1' : '0' ) );
@@ -298,7 +298,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 ) {
 				$posting['wp_remote_get']['success'] = true;
 			} else {
-				$posting['wp_remote_get']['note']    = __( 'wp_remote_get() failed. The WooCommerce plugin updater won\'t work with your server. Contact your hosting provider.', 'woocommerce' );
+				$posting['wp_remote_get']['note'] = __( 'wp_remote_get() failed. The WooCommerce plugin updater won\'t work with your server. Contact your hosting provider.', 'woocommerce' );
 				if ( is_wp_error( $response ) ) {
 					$posting['wp_remote_get']['note'] .= ' ' . sprintf( __( 'Error: %s', 'woocommerce' ), wc_clean( $response->get_error_message() ) );
 				} else {
@@ -362,7 +362,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<tr>
 					<td><?php echo esc_html( $table ); ?></td>
 					<td class="help">&nbsp;</td>
-					<td><?php echo $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s;", $wpdb->prefix . $table ) ) !== $wpdb->prefix . $table ? '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . __( 'Table does not exist', 'woocommerce' ) . '</mark>' : '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>'; ?></td>
+					<td><?php echo $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s;', $wpdb->prefix . $table ) ) !== $wpdb->prefix . $table ? '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . __( 'Table does not exist', 'woocommerce' ) . '</mark>' : '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>'; ?></td>
 				</tr>
 				<?php
 			}
@@ -415,7 +415,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				$plugin_name = esc_html( $plugin_data['Name'] );
 
 				if ( ! empty( $plugin_data['PluginURI'] ) ) {
-					$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage' , 'woocommerce' ) . '" target="_blank">' . $plugin_name . '</a>';
+					$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . esc_attr__( 'Visit plugin homepage', 'woocommerce' ) . '" target="_blank">' . $plugin_name . '</a>';
 				}
 
 				if ( strstr( $dirname, 'woocommerce-' ) && strstr( $plugin_data['PluginURI'], 'woothemes.com' ) ) {
@@ -427,10 +427,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 							foreach ( $cl_lines as $line_num => $cl_line ) {
 								if ( preg_match( '/^[0-9]/', $cl_line ) ) {
 
-									$date         = str_replace( '.' , '-' , trim( substr( $cl_line , 0 , strpos( $cl_line , '-' ) ) ) );
-									$version      = preg_replace( '~[^0-9,.]~' , '' ,stristr( $cl_line , "version" ) );
-									$update       = trim( str_replace( "*" , "" , $cl_lines[ $line_num + 1 ] ) );
-									$version_data = array( 'date' => $date , 'version' => $version , 'update' => $update , 'changelog' => $changelog );
+									$date         = str_replace( '.', '-', trim( substr( $cl_line, 0, strpos( $cl_line, '-' ) ) ) );
+									$version      = preg_replace( '~[^0-9,.]~', '', stristr( $cl_line, 'version' ) );
+									$update       = trim( str_replace( '*', '', $cl_lines[ $line_num + 1 ] ) );
+									$version_data = array( 'date' => $date, 'version' => $version, 'update' => $update, 'changelog' => $changelog );
 									set_transient( md5( $plugin ) . '_version_data', $version_data, DAY_IN_SECONDS );
 									break;
 								}
@@ -472,27 +472,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<td><?php echo 'yes' === get_option( 'woocommerce_force_ssl_checkout' ) ? '<mark class="yes"><span class="dashicons dashicons-yes"></span></mark>' : '<mark class="no">&ndash;</mark>'; ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Currency"><?php _e( 'Currency', 'woocommerce' ) ?></td>
+			<td data-export-label="Currency"><?php _e( 'Currency', 'woocommerce' ); ?></td>
 			<td class="help"><?php echo wc_help_tip( __( 'What currency prices are listed at in the catalog and which currency gateways will take payments in.', 'woocommerce' ) ); ?></td>
-			<td><?php echo get_woocommerce_currency(); ?> (<?php echo get_woocommerce_currency_symbol() ?>)</td>
+			<td><?php echo get_woocommerce_currency(); ?> (<?php echo get_woocommerce_currency_symbol(); ?>)</td>
 		</tr>
 		<tr>
-			<td data-export-label="Currency Position"><?php _e( 'Currency Position', 'woocommerce' ) ?></td>
+			<td data-export-label="Currency Position"><?php _e( 'Currency Position', 'woocommerce' ); ?></td>
 			<td class="help"><?php echo wc_help_tip( __( 'The position of the currency symbol.', 'woocommerce' ) ); ?></td>
 			<td><?php echo get_option( 'woocommerce_currency_pos' ); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Thousand Separator"><?php _e( 'Thousand Separator', 'woocommerce' ) ?></td>
+			<td data-export-label="Thousand Separator"><?php _e( 'Thousand Separator', 'woocommerce' ); ?></td>
 			<td class="help"><?php echo wc_help_tip( __( 'The thousand separator of displayed prices.', 'woocommerce' ) ); ?></td>
 			<td><?php echo wc_get_price_thousand_separator(); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'woocommerce' ) ?></td>
+			<td data-export-label="Decimal Separator"><?php _e( 'Decimal Separator', 'woocommerce' ); ?></td>
 			<td class="help"><?php echo wc_help_tip( __( 'The decimal separator of displayed prices.', 'woocommerce' ) ); ?></td>
 			<td><?php echo wc_get_price_decimal_separator(); ?></td>
 		</tr>
 		<tr>
-			<td data-export-label="Number of Decimals"><?php _e( 'Number of Decimals', 'woocommerce' ) ?></td>
+			<td data-export-label="Number of Decimals"><?php _e( 'Number of Decimals', 'woocommerce' ); ?></td>
 			<td class="help"><?php echo wc_help_tip( __( 'The number of decimal points shown in displayed prices.', 'woocommerce' ) ); ?></td>
 			<td><?php echo wc_get_price_decimals(); ?></td>
 		</tr>
@@ -561,13 +561,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 				}
 
 				echo '<tr><td data-export-label="' . esc_attr( $page_name ) . '">' . $page_name . ':</td>';
-				echo '<td class="help">' . wc_help_tip( $values['help']  ) . '</td><td>';
+				echo '<td class="help">' . wc_help_tip( $values['help'] ) . '</td><td>';
 
 				// Page ID check.
 				if ( ! $page_id ) {
 					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . __( 'Page not set', 'woocommerce' ) . '</mark>';
 					$error = true;
-				} else if ( get_post_status( $page_id ) !== 'publish' ) {
+				} elseif ( get_post_status( $page_id ) !== 'publish' ) {
 					echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( 'Page visibility should be %spublic%s', 'woocommerce' ), '<a href="https://codex.wordpress.org/Content_Visibility" target="_blank">', '</a>' ) . '</mark>';
 					$error = true;
 				} else {
@@ -581,7 +581,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 							echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( 'Page does not exist', 'woocommerce' ) ) . '</mark>';
 							$error = true;
 
-						} else if ( ! strstr( $page->post_content, $values['shortcode'] ) ) {
+						} elseif ( ! strstr( $page->post_content, $values['shortcode'] ) ) {
 
 							echo '<mark class="error"><span class="dashicons dashicons-warning"></span> ' . sprintf( __( 'Page does not contain the shortcode: %s', 'woocommerce' ), $values['shortcode'] ) . '</mark>';
 							$error = true;
@@ -610,7 +610,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<td class="help">&nbsp;</td>
 			<td><?php
 				$display_terms = array();
-				$terms = get_terms( 'product_type', array( 'hide_empty' => 0 ) );
+				$terms         = get_terms( 'product_type', array( 'hide_empty' => 0 ) );
 				foreach ( $terms as $term ) {
 					$display_terms[] = strtolower( $term->name ) . ' (' . $term->slug . ')';
 				}
@@ -662,7 +662,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			?></td>
 		</tr>
 		<?php
-		if( is_child_theme() ) :
+		if ( is_child_theme() ) :
 			$parent_theme         = wp_get_theme( $active_theme->Template );
 			$update_theme_version = WC_Admin_Status::get_latest_theme_version( $parent_theme );
 		?>
@@ -687,7 +687,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 			<td class="help"><?php echo wc_help_tip( __( 'The parent theme developers URL.', 'woocommerce' ) ); ?></td>
 			<td><?php echo $parent_theme->{'Author URI'}; ?></td>
 		</tr>
-		<?php endif ?>
+		<?php endif; ?>
 		<tr>
 			<td data-export-label="WooCommerce Support"><?php _e( 'WooCommerce Support', 'woocommerce' ); ?>:</td>
 			<td class="help"><?php echo wc_help_tip( __( 'Displays whether or not the current active theme declares WooCommerce support.', 'woocommerce' ) ); ?></td>
@@ -726,7 +726,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						$theme_file = get_stylesheet_directory() . '/woocommerce/' . $file;
 					} elseif ( file_exists( get_template_directory() . '/' . $file ) ) {
 						$theme_file = get_template_directory() . '/' . $file;
-					} elseif( file_exists( get_template_directory() . '/woocommerce/' . $file ) ) {
+					} elseif ( file_exists( get_template_directory() . '/woocommerce/' . $file ) ) {
 						$theme_file = get_template_directory() . '/woocommerce/' . $file;
 					} else {
 						$theme_file = false;
@@ -773,7 +773,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<tr>
 					<td>&nbsp;</td>
 					<td class="help">&nbsp;</td>
-					<td><a href="http://docs.woothemes.com/document/fix-outdated-templates-woocommerce/" target="_blank"><?php _e( 'Learn how to update outdated templates', 'woocommerce' ) ?></a></td>
+					<td><a href="http://docs.woothemes.com/document/fix-outdated-templates-woocommerce/" target="_blank"><?php _e( 'Learn how to update outdated templates', 'woocommerce' ); ?></a></td>
 				</tr>
 				<?php
 			}

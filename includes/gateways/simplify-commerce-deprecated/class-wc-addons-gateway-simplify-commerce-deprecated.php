@@ -32,8 +32,8 @@ class WC_Addons_Gateway_Simplify_Commerce_Deprecated extends WC_Addons_Gateway_S
 	/**
 	 * Store the customer and card IDs on the order and subscriptions in the order.
 	 *
-	 * @param int $order_id
-	 * @param string $customer_id
+	 * @param  int    $order_id
+	 * @param  string $customer_id
 	 * @return array
 	 */
 	protected function save_subscription_meta( $order_id, $customer_id ) {
@@ -44,7 +44,7 @@ class WC_Addons_Gateway_Simplify_Commerce_Deprecated extends WC_Addons_Gateway_S
 	 * process_subscription_payment function.
 	 *
 	 * @param WC_order $order
-	 * @param integer $amount (default: 0)
+	 * @param integer  $amount (default: 0)
 	 * @uses  Simplify_BadRequestException
 	 * @return bool|WP_Error
 	 */
@@ -120,9 +120,9 @@ class WC_Addons_Gateway_Simplify_Commerce_Deprecated extends WC_Addons_Gateway_S
 	/**
 	 * process_scheduled_subscription_payment function.
 	 *
-	 * @param float $amount_to_charge The amount to charge.
-	 * @param WC_Order $order The WC_Order object of the order which the subscription was purchased in.
-	 * @param int $product_id The ID of the subscription product for which this payment relates.
+	 * @param float    $amount_to_charge The amount to charge.
+	 * @param WC_Order $order            The WC_Order object of the order which the subscription was purchased in.
+	 * @param int      $product_id       The ID of the subscription product for which this payment relates.
 	 */
 	public function process_scheduled_subscription_payment( $amount_to_charge, $order, $product_id ) {
 		$result = $this->process_subscription_payment( $order, $amount_to_charge );
@@ -137,10 +137,10 @@ class WC_Addons_Gateway_Simplify_Commerce_Deprecated extends WC_Addons_Gateway_S
 	/**
 	 * Don't transfer customer meta when creating a parent renewal order.
 	 *
-	 * @param string $order_meta_query MySQL query for pulling the metadata
-	 * @param int $original_order_id Post ID of the order being used to purchased the subscription being renewed
-	 * @param int $renewal_order_id Post ID of the order created for renewing the subscription
-	 * @param string $new_order_role The role the renewal order is taking, one of 'parent' or 'child'
+	 * @param  string $order_meta_query  MySQL query for pulling the metadata
+	 * @param  int    $original_order_id Post ID of the order being used to purchased the subscription being renewed
+	 * @param  int    $renewal_order_id  Post ID of the order created for renewing the subscription
+	 * @param  string $new_order_role    The role the renewal order is taking, one of 'parent' or 'child'
 	 * @return string
 	 */
 	public function remove_renewal_order_meta( $order_meta_query, $original_order_id, $renewal_order_id, $new_order_role ) {
@@ -154,7 +154,7 @@ class WC_Addons_Gateway_Simplify_Commerce_Deprecated extends WC_Addons_Gateway_S
 	/**
 	 * Check if order contains subscriptions.
 	 *
-	 * @param  int $order_id
+	 * @param  int  $order_id
 	 * @return bool
 	 */
 	protected function order_contains_subscription( $order_id ) {
@@ -165,13 +165,14 @@ class WC_Addons_Gateway_Simplify_Commerce_Deprecated extends WC_Addons_Gateway_S
 	 * Update the customer_id for a subscription after using Simplify to complete a payment to make up for.
 	 * an automatic renewal payment which previously failed.
 	 *
-	 * @param WC_Order $original_order The original order in which the subscription was purchased.
-	 * @param WC_Order $renewal_order The order which recorded the successful payment (to make up for the failed automatic payment).
-	 * @param string $subscription_key A subscription key of the form created by @see WC_Subscriptions_Manager::get_subscription_key()
+	 * @param WC_Order $original_order   The original order in which the subscription was purchased.
+	 * @param WC_Order $renewal_order    The order which recorded the successful payment (to make up for the failed automatic payment).
+	 * @param string   $subscription_key A subscription key of the form created by @see WC_Subscriptions_Manager::get_subscription_key()
 	 */
 	public function change_failing_payment_method( $original_order, $renewal_order, $subscription_key ) {
 		$new_customer_id = get_post_meta( $renewal_order->id, '_simplify_customer_id', true );
 
 		update_post_meta( $original_order->id, '_simplify_customer_id', $new_customer_id );
 	}
+
 }

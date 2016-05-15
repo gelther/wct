@@ -67,8 +67,8 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Loads required variation data.
 	 *
-	 * @param int $variation ID of the variation to load
-	 * @param array $args Array of the arguments containing parent product data
+	 * @param int   $variation ID of the variation to load
+	 * @param array $args      Array of the arguments containing parent product data
 	 */
 	public function __construct( $variation, $args = array() ) {
 		if ( is_object( $variation ) ) {
@@ -93,7 +93,7 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * __isset function.
 	 *
-	 * @param mixed $key
+	 * @param  mixed $key
 	 * @return bool
 	 */
 	public function __isset( $key ) {
@@ -109,7 +109,7 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Get method returns variation meta data if set, otherwise in most cases the data from the parent.
 	 *
-	 * @param string $key
+	 * @param  string $key
 	 * @return mixed
 	 */
 	public function __get( $key ) {
@@ -154,7 +154,6 @@ class WC_Product_Variation extends WC_Product {
 	 * @return int variation (post) ID
 	 */
 	public function get_id() {
-
 		return $this->variation_id;
 	}
 
@@ -170,7 +169,7 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Wrapper for get_permalink. Adds this variations attributes to the URL.
 	 *
-	 * @param  $cart item array If the cart item is passed, we can get a link containing the exact attributes selected for the variation, rather than the default attributes.
+	 * @param         $cart item array If the cart item is passed, we can get a link containing the exact attributes selected for the variation, rather than the default attributes.
 	 * @return string
 	 */
 	public function get_permalink( $cart_item = null ) {
@@ -216,7 +215,7 @@ class WC_Product_Variation extends WC_Product {
 		}
 
 		// Price not set
-		elseif ( $this->get_price() === "" ) {
+		elseif ( $this->get_price() === '' ) {
 			$visible = false;
 		}
 
@@ -283,19 +282,17 @@ class WC_Product_Variation extends WC_Product {
 	 * @return boolean
 	 */
 	public function has_all_attributes_set() {
-
 		$set = true;
 
 		// undefined attributes have null strings as array values
-		foreach( $this->get_variation_attributes() as $att ){
-			if( ! $att ){
+		foreach ( $this->get_variation_attributes() as $att ) {
+			if ( ! $att ) {
 				$set = false;
 				break;
 			}
 		}
 
 		return $set;
-
 	}
 
 	/**
@@ -304,7 +301,6 @@ class WC_Product_Variation extends WC_Product {
 	 * @return string containing the formatted price
 	 */
 	public function get_price_html( $price = '' ) {
-
 		$display_price         = $this->get_display_price();
 		$display_regular_price = $this->get_display_price( $this->get_regular_price() );
 		$display_sale_price    = $this->get_display_price( $this->get_sale_price() );
@@ -345,8 +341,8 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Gets the main product image.
 	 *
-	 * @param string $size (default: 'shop_thumbnail')
-	 * @param bool True to return $placeholder if no image is found, or false to return an empty string.
+	 * @param  string $size (default: 'shop_thumbnail')
+	 * @param  bool         True to return $placeholder if no image is found, or false to return an empty string.
 	 * @return string
 	 */
 	public function get_image( $size = 'shop_thumbnail', $attr = array(), $placeholder = true ) {
@@ -355,7 +351,7 @@ class WC_Product_Variation extends WC_Product {
 		} elseif ( has_post_thumbnail( $this->id ) ) {
 			$image = get_the_post_thumbnail( $this->id, $size, $attr );
 		} elseif ( ( $parent_id = wp_get_post_parent_id( $this->id ) ) && has_post_thumbnail( $parent_id ) ) {
-			$image = get_the_post_thumbnail( $parent_id, $size , $attr);
+			$image = get_the_post_thumbnail( $parent_id, $size, $attr );
 		} elseif ( $placeholder ) {
 			$image = wc_placeholder_img( $size );
 		} else {
@@ -426,9 +422,9 @@ class WC_Product_Variation extends WC_Product {
 	 * Uses queries rather than update_post_meta so we can do this in one query (to avoid stock issues).
 	 * We cannot rely on the original loaded value in case another order was made since then.
 	 *
-	 * @param int $amount
-	 * @param string $mode can be set, add, or subtract
-	 * @return int new stock level
+	 * @param  int    $amount
+	 * @param  string $mode   can be set, add, or subtract
+	 * @return int            new stock level
 	 */
 	public function set_stock( $amount = null, $mode = 'set' ) {
 		global $wpdb;
@@ -502,8 +498,8 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Reduce stock level of the product.
 	 *
-	 * @param int $amount (default: 1) Amount to reduce by
-	 * @return int stock level
+	 * @param  int $amount (default: 1) Amount to reduce by
+	 * @return int         stock level
 	 */
 	public function reduce_stock( $amount = 1 ) {
 		if ( true === $this->managing_stock() ) {
@@ -516,8 +512,8 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Increase stock level of the product.
 	 *
-	 * @param int $amount (default: 1) Amount to increase by
-	 * @return int stock level
+	 * @param  int $amount (default: 1) Amount to increase by
+	 * @return int         stock level
 	 */
 	public function increase_stock( $amount = 1 ) {
 		if ( true === $this->managing_stock() ) {
@@ -560,7 +556,7 @@ class WC_Product_Variation extends WC_Product {
 						}
 					break;
 				}
-				$class        = 'in-stock';
+				$class = 'in-stock';
 			} elseif ( $this->backorders_allowed() && $this->backorders_require_notification() ) {
 				$availability = __( 'Available on backorder', 'woocommerce' );
 				$class        = 'available-on-backorder';
@@ -595,7 +591,7 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Is on backorder?
 	 *
-	 * @param int $qty_in_cart (default: 0)
+	 * @param  int  $qty_in_cart (default: 0)
 	 * @return bool
 	 */
 	public function is_on_backorder( $qty_in_cart = 0 ) {
@@ -609,7 +605,7 @@ class WC_Product_Variation extends WC_Product {
 	/**
 	 * Returns whether or not the product has enough stock for the order.
 	 *
-	 * @param mixed $quantity
+	 * @param  mixed $quantity
 	 * @return bool
 	 */
 	public function has_enough_stock( $quantity ) {
@@ -676,18 +672,18 @@ class WC_Product_Variation extends WC_Product {
 			foreach ( $attributes as $attribute ) {
 
 				// Only deal with attributes that are variations
-				if ( ! $attribute[ 'is_variation' ] ) {
+				if ( ! $attribute['is_variation'] ) {
 					continue;
 				}
 
-				$variation_selected_value = isset( $variation_data[ 'attribute_' . sanitize_title( $attribute[ 'name' ] ) ] ) ? $variation_data[ 'attribute_' . sanitize_title( $attribute[ 'name' ] ) ] : '';
-				$description_name         = esc_html( wc_attribute_label( $attribute[ 'name' ] ) );
+				$variation_selected_value = isset( $variation_data[ 'attribute_' . sanitize_title( $attribute['name'] ) ] ) ? $variation_data[ 'attribute_' . sanitize_title( $attribute['name'] ) ] : '';
+				$description_name         = esc_html( wc_attribute_label( $attribute['name'] ) );
 				$description_value        = __( 'Any', 'woocommerce' );
 
 				// Get terms for attribute taxonomy or value if its a custom attribute
-				if ( $attribute[ 'is_taxonomy' ] ) {
+				if ( $attribute['is_taxonomy'] ) {
 
-					$post_terms = wp_get_post_terms( $this->id, $attribute[ 'name' ] );
+					$post_terms = wp_get_post_terms( $this->id, $attribute['name'] );
 
 					foreach ( $post_terms as $term ) {
 						if ( $variation_selected_value === $term->slug ) {
@@ -697,7 +693,7 @@ class WC_Product_Variation extends WC_Product {
 
 				} else {
 
-					$options = wc_get_text_attributes( $attribute[ 'value' ] );
+					$options = wc_get_text_attributes( $attribute['value'] );
 
 					foreach ( $options as $option ) {
 
@@ -762,4 +758,5 @@ class WC_Product_Variation extends WC_Product {
 	public function get_variation_description() {
 		return wpautop( do_shortcode( wp_kses_post( get_post_meta( $this->variation_id, '_variation_description', true ) ) ) );
 	}
+
 }
