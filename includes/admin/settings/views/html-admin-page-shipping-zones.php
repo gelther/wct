@@ -43,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 						if ( $methods ) {
 							foreach ( $methods as $method ) {
-	                            $class_name = 'yes' === $method->enabled ? 'method_enabled' : 'method_disabled';
+								$class_name = 'yes' === $method->enabled ? 'method_enabled' : 'method_disabled';
 								echo '<li class="wc-shipping-zone-method"><a href="admin.php?page=wc-settings&amp;tab=shipping&amp;instance_id=' . absint( $method->instance_id ) . '" class="' . esc_attr( $class_name ) . '">' . esc_html( $method->get_title() ) . '</a></li>';
 							}
 						}
@@ -109,7 +109,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<a class="wc-shipping-zone-postcodes-toggle" href="#"><?php _e( 'Limit to specific ZIP/postcodes', 'woocommerce' ); ?></a>
 				<div class="wc-shipping-zone-postcodes">
 					<textarea name="zone_postcodes[{{ data.zone_id }}]" data-attribute="zone_postcodes" placeholder="<?php esc_attr_e( 'List 1 postcode per line', 'woocommerce' ); ?>" class="input-text large-text" cols="25" rows="5"></textarea>
-					<span class="description"><?php _e( 'Wildcards and numerical ranges are supported too, for example, 90210-99000 and CB23*', 'woocommerce' ) ?></span>
+					<span class="description"><?php _e( 'Wildcards and numerical ranges are supported too, for example, 90210-99000 and CB23*', 'woocommerce' ); ?></span>
 				</div>
 			</div>
 		</td>
@@ -141,13 +141,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                         <div class="wc-shipping-zone-method-selector">
                 			<select name="add_method_id">
                 				<?php
-                					foreach ( WC()->shipping->load_shipping_methods() as $method ) {
-                						if ( ! $method->supports( 'shipping-zones' ) ) {
-                							continue;
-                                        }
-                						echo '<option data-description="' . esc_attr( $method->method_description ) . '" value="' . esc_attr( $method->id ) . '">' . esc_attr( $method->title ) . '</li>';
-                					}
-                				?>
+									foreach ( WC()->shipping->load_shipping_methods() as $method ) {
+										if ( ! $method->supports( 'shipping-zones' ) ) {
+											continue;
+										}
+										echo '<option data-description="' . esc_attr( $method->method_description ) . '" value="' . esc_attr( $method->id ) . '">' . esc_attr( $method->title ) . '</li>';
+									}
+								?>
                 			</select>
                             <input type="hidden" name="zone_id" value="{{{ data.zone_id }}}" />
                 		</div>

@@ -30,7 +30,6 @@ class WC_Logger {
 		$this->_handles = array();
 	}
 
-
 	/**
 	 * Destructor.
 	 */
@@ -40,13 +39,12 @@ class WC_Logger {
 		}
 	}
 
-
 	/**
 	 * Open log file for writing.
 	 *
 	 * @access private
-	 * @param mixed $handle
-	 * @return bool success
+	 * @param  mixed $handle
+	 * @return bool          success
 	 */
 	private function open( $handle ) {
 		if ( isset( $this->_handles[ $handle ] ) ) {
@@ -60,7 +58,6 @@ class WC_Logger {
 		return false;
 	}
 
-
 	/**
 	 * Add a log entry to chosen file.
 	 *
@@ -70,12 +67,11 @@ class WC_Logger {
 	public function add( $handle, $message ) {
 		if ( $this->open( $handle ) && is_resource( $this->_handles[ $handle ] ) ) {
 			$time = date_i18n( 'm-d-Y @ H:i:s -' ); // Grab Time
-			@fwrite( $this->_handles[ $handle ], $time . " " . $message . "\n" );
+			@fwrite( $this->_handles[ $handle ], $time . ' ' . $message . "\n" );
 		}
 
 		do_action( 'woocommerce_log_add', $handle, $message );
 	}
-
 
 	/**
 	 * Clear entries from chosen file.

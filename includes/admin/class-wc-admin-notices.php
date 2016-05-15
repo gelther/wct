@@ -62,7 +62,7 @@ class WC_Admin_Notices {
 
 	/**
 	 * Show a notice.
-	 * @param  string $name
+	 * @param string $name
 	 */
 	public static function add_notice( $name ) {
 		$notices = array_unique( array_merge( get_option( 'woocommerce_admin_notices', array() ), array( $name ) ) );
@@ -71,7 +71,7 @@ class WC_Admin_Notices {
 
 	/**
 	 * Remove a notice from being displayed.
-	 * @param  string $name
+	 * @param string $name
 	 */
 	public static function remove_notice( $name ) {
 		$notices = array_diff( get_option( 'woocommerce_admin_notices', array() ), array( $name ) );
@@ -113,7 +113,7 @@ class WC_Admin_Notices {
 		$notices = get_option( 'woocommerce_admin_notices', array() );
 
 		if ( $notices ) {
-			wp_enqueue_style( 'woocommerce-activation', plugins_url(  '/assets/css/activation.css', WC_PLUGIN_FILE ) );
+			wp_enqueue_style( 'woocommerce-activation', plugins_url( '/assets/css/activation.css', WC_PLUGIN_FILE ) );
 			foreach ( $notices as $notice ) {
 				if ( ! empty( $this->core_notices[ $notice ] ) && apply_filters( 'woocommerce_show_admin_notice', true, $notice ) ) {
 					add_action( 'admin_notices', array( $this, $this->core_notices[ $notice ] ) );
@@ -225,6 +225,7 @@ class WC_Admin_Notices {
 			}
 		}
 	}
+
 }
 
 new WC_Admin_Notices();

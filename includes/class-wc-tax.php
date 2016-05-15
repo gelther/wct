@@ -41,11 +41,11 @@ class WC_Tax {
 
 	/**
 	 * Calculate tax for a line.
-	 * @param  float  $price              Price to calc tax on
-	 * @param  array  $rates              Rates to apply
+	 * @param  float   $price              Price to calc tax on
+	 * @param  array   $rates              Rates to apply
 	 * @param  boolean $price_includes_tax Whether the passed price has taxes included
 	 * @param  boolean $suppress_rounding  Whether to suppress any rounding from taking place
-	 * @return array                      Array of rates + prices after tax
+	 * @return array                       Array of rates + prices after tax
 	 */
 	public static function calc_tax( $price, $rates, $price_includes_tax = false, $suppress_rounding = false ) {
 		// Work in pence to X precision
@@ -63,8 +63,8 @@ class WC_Tax {
 		}
 
 		// Remove precision
-		$price     = self::remove_precision( $price );
-		$taxes     = array_map( array( __CLASS__, 'remove_precision' ), $taxes );
+		$price = self::remove_precision( $price );
+		$taxes = array_map( array( __CLASS__, 'remove_precision' ), $taxes );
 
 		return apply_filters( 'woocommerce_calc_tax', $taxes, $price, $rates, $price_includes_tax, $suppress_rounding );
 	}
@@ -72,9 +72,9 @@ class WC_Tax {
 	/**
 	 * Calculate the shipping tax using a passed array of rates.
 	 *
-	 * @param   float		Price
-	 * @param	array		Taxation Rate
-	 * @return  array
+	 * @param  float Price
+	 * @param  array Taxation Rate
+	 * @return array
 	 */
 	public static function calc_shipping_tax( $price, $rates ) {
 		return self::calc_exclusive_tax( $price, $rates );
@@ -125,21 +125,24 @@ class WC_Tax {
 
 		$regular_tax_rates = $compound_tax_rates = 0;
 
-		foreach ( $rates as $key => $rate )
-			if ( $rate['compound'] == 'yes' )
+		foreach ( $rates as $key => $rate ) {
+			if ( $rate['compound'] == 'yes' ) {
 				$compound_tax_rates = $compound_tax_rates + $rate['rate'];
-			else
-				$regular_tax_rates  = $regular_tax_rates + $rate['rate'];
+			} else {
+				$regular_tax_rates = $regular_tax_rates + $rate['rate'];
+			}
+		}
 
-		$regular_tax_rate 	= 1 + ( $regular_tax_rates / 100 );
-		$compound_tax_rate 	= 1 + ( $compound_tax_rates / 100 );
+		$regular_tax_rate   = 1 + ( $regular_tax_rates / 100 );
+		$compound_tax_rate  = 1 + ( $compound_tax_rates / 100 );
 		$non_compound_price = $price / $compound_tax_rate;
 
 		foreach ( $rates as $key => $rate ) {
-			if ( ! isset( $taxes[ $key ] ) )
+			if ( ! isset( $taxes[ $key ] ) ) {
 				$taxes[ $key ] = 0;
+			}
 
-			$the_rate      = $rate['rate'] / 100;
+			$the_rate = $rate['rate'] / 100;
 
 			if ( $rate['compound'] == 'yes' ) {
 				$the_price = $price;
@@ -149,9 +152,9 @@ class WC_Tax {
 				$the_rate  = $the_rate / $regular_tax_rate;
 			}
 
-			$net_price       = $price - ( $the_rate * $the_price );
-			$tax_amount      = $price - $net_price;
-			$taxes[ $key ]   += apply_filters( 'woocommerce_price_inc_tax_amount', $tax_amount, $key, $rate, $price );
+			$net_price      = $price - ( $the_rate * $the_price );
+			$tax_amount     = $price - $net_price;
+			$taxes[ $key ] += apply_filters( 'woocommerce_price_inc_tax_amount', $tax_amount, $key, $rate, $price );
 		}
 
 		return $taxes;
@@ -171,8 +174,9 @@ class WC_Tax {
 			// Multiple taxes
 			foreach ( $rates as $key => $rate ) {
 
-				if ( $rate['compound'] == 'yes' )
+				if ( $rate['compound'] == 'yes' ) {
 					continue;
+				}
 
 				$tax_amount = $price * ( $rate['rate'] / 100 );
 
@@ -180,10 +184,11 @@ class WC_Tax {
 				$tax_amount = apply_filters( 'woocommerce_price_ex_tax_amount', $tax_amount, $key, $rate, $price );
 
 				// Add rate
-				if ( ! isset( $taxes[ $key ] ) )
+				if ( ! isset( $taxes[ $key ] ) ) {
 					$taxes[ $key ] = $tax_amount;
-				else
+				} else {
 					$taxes[ $key ] += $tax_amount;
+				}
 			}
 
 			$pre_compound_total = array_sum( $taxes );
@@ -191,8 +196,9 @@ class WC_Tax {
 			// Compound taxes
 			foreach ( $rates as $key => $rate ) {
 
-				if ( $rate['compound'] == 'no' )
+				if ( $rate['compound'] == 'no' ) {
 					continue;
+				}
 
 				$the_price_inc_tax = $price + ( $pre_compound_total );
 
@@ -202,10 +208,11 @@ class WC_Tax {
 				$tax_amount = apply_filters( 'woocommerce_price_ex_tax_amount', $tax_amount, $key, $rate, $price, $the_price_inc_tax, $pre_compound_total );
 
 				// Add rate
-				if ( ! isset( $taxes[ $key ] ) )
+				if ( ! isset( $taxes[ $key ] ) ) {
 					$taxes[ $key ] = $tax_amount;
-				else
+				} else {
 					$taxes[ $key ] += $tax_amount;
+				}
 			}
 		}
 
@@ -215,7 +222,7 @@ class WC_Tax {
 	/**
 	 * Searches for all matching country/state/postcode tax rates.
 	 *
-	 * @param array $args
+	 * @param  array $args
 	 * @return array
 	 */
 	public static function find_rates( $args = array() ) {
@@ -249,7 +256,7 @@ class WC_Tax {
 	/**
 	 * Searches for all matching country/state/postcode tax rates.
 	 *
-	 * @param array $args
+	 * @param  array $args
 	 * @return array
 	 */
 	public static function find_shipping_rates( $args = array() ) {
@@ -270,11 +277,11 @@ class WC_Tax {
 	/**
 	 * Loop through a set of tax rates and get the matching rates (1 per priority).
 	 *
-	 * @param  string $country
-	 * @param  string $state
-	 * @param  string $postcode
-	 * @param  string $city
-	 * @param  string $tax_class
+	 * @param  string   $country
+	 * @param  string   $state
+	 * @param  string   $postcode
+	 * @param  string   $city
+	 * @param  string   $tax_class
 	 * @param  string[] $valid_postcodes
 	 * @return array
 	 */
@@ -348,7 +355,7 @@ class WC_Tax {
 	 *
 	 * Used by get_rates(), get_shipping_rates().
 	 *
-	 * @param  $tax_class string Optional, passed to the filter for advanced tax setups.
+	 * @param        $tax_class string Optional, passed to the filter for advanced tax setups.
 	 * @return array
 	 */
 	public static function get_tax_location( $tax_class = '' ) {
@@ -370,8 +377,8 @@ class WC_Tax {
 
 	/**
 	 * Get's an array of matching rates for a tax class.
-	 * @param string $tax_class
-	 * @return  array
+	 * @param  string $tax_class
+	 * @return array
 	 */
 	public static function get_rates( $tax_class = '' ) {
 		$tax_class         = sanitize_title( $tax_class );
@@ -382,10 +389,10 @@ class WC_Tax {
 			list( $country, $state, $postcode, $city ) = $location;
 
 			$matched_tax_rates = self::find_rates( array(
-				'country' 	=> $country,
-				'state' 	=> $state,
-				'postcode' 	=> $postcode,
-				'city' 		=> $city,
+				'country'   => $country,
+				'state'     => $state,
+				'postcode'  => $postcode,
+				'city'      => $city,
 				'tax_class' => $tax_class
 			) );
 		}
@@ -396,15 +403,15 @@ class WC_Tax {
 	/**
 	 * Get's an array of matching rates for the shop's base country.
 	 *
-	 * @param   string	Tax Class
-	 * @return  array
+	 * @param  string Tax Class
+	 * @return array
 	 */
 	public static function get_base_tax_rates( $tax_class = '' ) {
 		return apply_filters( 'woocommerce_base_tax_rates', self::find_rates( array(
-			'country' 	=> WC()->countries->get_base_country(),
-			'state' 	=> WC()->countries->get_base_state(),
-			'postcode' 	=> WC()->countries->get_base_postcode(),
-			'city' 		=> WC()->countries->get_base_city(),
+			'country'   => WC()->countries->get_base_country(),
+			'state'     => WC()->countries->get_base_state(),
+			'postcode'  => WC()->countries->get_base_postcode(),
+			'city'      => WC()->countries->get_base_city(),
 			'tax_class' => $tax_class
 		) ), $tax_class );
 	}
@@ -413,8 +420,8 @@ class WC_Tax {
 	 * Alias for get_base_tax_rates().
 	 *
 	 * @deprecated 2.3
-	 * @param   string	Tax Class
-	 * @return  array
+	 * @param  string Tax Class
+	 * @return array
 	 */
 	public static function get_shop_base_rate( $tax_class = '' ) {
 		return self::get_base_tax_rates( $tax_class );
@@ -423,8 +430,8 @@ class WC_Tax {
 	/**
 	 * Gets an array of matching shipping tax rates for a given class.
 	 *
-	 * @param   string	Tax Class
-	 * @return  mixed
+	 * @param  string Tax Class
+	 * @return mixed
 	 */
 	public static function get_shipping_tax_rates( $tax_class = null ) {
 		// See if we have an explicitly set shipping tax class
@@ -441,10 +448,10 @@ class WC_Tax {
 			if ( ! is_null( $tax_class ) ) {
 				// This will be per item shipping
 				$matched_tax_rates = self::find_shipping_rates( array(
-					'country' 	=> $country,
-					'state' 	=> $state,
-					'postcode' 	=> $postcode,
-					'city' 		=> $city,
+					'country'   => $country,
+					'state'     => $state,
+					'postcode'  => $postcode,
+					'city'      => $city,
 					'tax_class' => $tax_class
 				) );
 
@@ -461,10 +468,10 @@ class WC_Tax {
 						$tax_class = sanitize_title( $tax_class );
 						if ( in_array( $tax_class, $cart_tax_classes ) ) {
 							$matched_tax_rates = self::find_shipping_rates( array(
-								'country' 	=> $country,
-								'state' 	=> $state,
-								'postcode' 	=> $postcode,
-								'city' 		=> $city,
+								'country'   => $country,
+								'state'     => $state,
+								'postcode'  => $postcode,
+								'city'      => $city,
 								'tax_class' => $tax_class
 							) );
 							break;
@@ -474,10 +481,10 @@ class WC_Tax {
 				// If a single tax class is found, use it
 				} elseif ( sizeof( $cart_tax_classes ) == 1 ) {
 					$matched_tax_rates = self::find_shipping_rates( array(
-						'country' 	=> $country,
-						'state' 	=> $state,
-						'postcode' 	=> $postcode,
-						'city' 		=> $city,
+						'country'   => $country,
+						'state'     => $state,
+						'postcode'  => $postcode,
+						'city'      => $city,
 						'tax_class' => $cart_tax_classes[0]
 					) );
 				}
@@ -486,10 +493,10 @@ class WC_Tax {
 			// Get standard rate if no taxes were found
 			if ( ! sizeof( $matched_tax_rates ) ) {
 				$matched_tax_rates = self::find_shipping_rates( array(
-					'country' 	=> $country,
-					'state' 	=> $state,
-					'postcode' 	=> $postcode,
-					'city' 		=> $city
+					'country'  => $country,
+					'state'    => $state,
+					'postcode' => $postcode,
+					'city'     => $city
 				) );
 			}
 		}
@@ -500,8 +507,8 @@ class WC_Tax {
 	/**
 	 * Return true/false depending on if a rate is a compound rate.
 	 *
-	 * @param   int		key
-	 * @return  bool
+	 * @param  int  key
+	 * @return bool
 	 */
 	public static function is_compound( $key ) {
 		global $wpdb;
@@ -511,8 +518,8 @@ class WC_Tax {
 	/**
 	 * Return a given rates label.
 	 *
-	 * @param mixed $key_or_rate Tax rate ID, or the db row itself in object format
-	 * @return  string
+	 * @param  mixed  $key_or_rate Tax rate ID, or the db row itself in object format
+	 * @return string
 	 */
 	public static function get_rate_label( $key_or_rate ) {
 		global $wpdb;
@@ -535,8 +542,8 @@ class WC_Tax {
 	/**
 	 * Return a given rates percent.
 	 *
-	 * @param mixed $key_or_rate Tax rate ID, or the db row itself in object format
-	 * @return  string
+	 * @param  mixed  $key_or_rate Tax rate ID, or the db row itself in object format
+	 * @return string
 	 */
 	public static function get_rate_percent( $key_or_rate ) {
 		global $wpdb;
@@ -556,7 +563,7 @@ class WC_Tax {
 	 * Get a rates code. Code is made up of COUNTRY-STATE-NAME-Priority. E.g GB-VAT-1, US-AL-TAX-1.
 	 *
 	 * @access public
-	 * @param mixed $key_or_rate Tax rate ID, or the db row itself in object format
+	 * @param  mixed  $key_or_rate Tax rate ID, or the db row itself in object format
 	 * @return string
 	 */
 	public static function get_rate_code( $key_or_rate ) {
@@ -573,11 +580,11 @@ class WC_Tax {
 		$code_string = '';
 
 		if ( null !== $rate ) {
-			$code   = array();
-			$code[] = $rate->tax_rate_country;
-			$code[] = $rate->tax_rate_state;
-			$code[] = $rate->tax_rate_name ? $rate->tax_rate_name : 'TAX';
-			$code[] = absint( $rate->tax_rate_priority );
+			$code        = array();
+			$code[]      = $rate->tax_rate_country;
+			$code[]      = $rate->tax_rate_state;
+			$code[]      = $rate->tax_rate_name ? $rate->tax_rate_name : 'TAX';
+			$code[]      = absint( $rate->tax_rate_priority );
 			$code_string = strtoupper( implode( '-', array_filter( $code ) ) );
 		}
 
@@ -587,8 +594,8 @@ class WC_Tax {
 	/**
 	 * Round tax lines and return the sum.
 	 *
-	 * @param   array
-	 * @return  float
+	 * @param  array
+	 * @return float
 	 */
 	public static function get_tax_total( $taxes ) {
 		return array_sum( array_map( array( __CLASS__, 'round' ), $taxes ) );
@@ -673,7 +680,7 @@ class WC_Tax {
 	 * @return string
 	 */
 	public static function format_tax_rate_class( $class ) {
-		$class = sanitize_title( $class );
+		$class             = sanitize_title( $class );
 		$sanitized_classes = array_map( 'sanitize_title', self::get_tax_classes() );
 		if ( ! in_array( $class, $sanitized_classes ) ) {
 			$class = '';
@@ -705,7 +712,7 @@ class WC_Tax {
 	 *
 	 * @param  array $tax_rate
 	 *
-	 * @return int tax rate id
+	 * @return int             tax rate id
 	 */
 	public static function _insert_tax_rate( $tax_rate ) {
 		global $wpdb;
@@ -727,7 +734,7 @@ class WC_Tax {
 	 * @since 2.5.0
 	 * @access private
 	 *
-	 * @param  int $tax_rate_id
+	 * @param  int   $tax_rate_id
 	 *
 	 * @return array
 	 */
@@ -749,7 +756,7 @@ class WC_Tax {
 	 * @since 2.3.0
 	 * @access private
 	 *
-	 * @param int $tax_rate_id
+	 * @param int   $tax_rate_id
 	 * @param array $tax_rate
 	 */
 	public static function _update_tax_rate( $tax_rate_id, $tax_rate ) {
@@ -758,7 +765,7 @@ class WC_Tax {
 		$tax_rate_id = absint( $tax_rate_id );
 
 		$wpdb->update(
-			$wpdb->prefix . "woocommerce_tax_rates",
+			$wpdb->prefix . 'woocommerce_tax_rates',
 			self::prepare_tax_rate( $tax_rate ),
 			array(
 				'tax_rate_id' => $tax_rate_id
@@ -778,7 +785,7 @@ class WC_Tax {
 	 * @since 2.3.0
 	 * @access private
 	 *
-	 * @param  int $tax_rate_id
+	 * @param int $tax_rate_id
 	 */
 	public static function _delete_tax_rate( $tax_rate_id ) {
 		global $wpdb;
@@ -799,8 +806,8 @@ class WC_Tax {
 	 * @since 2.3.0
 	 * @access private
 	 *
-	 * @param  int $tax_rate_id
-	 * @param  string $postcodes String of postcodes separated by ; characters
+	 * @param  int    $tax_rate_id
+	 * @param  string $postcodes   String of postcodes separated by ; characters
 	 * @return string
 	 */
 	public static function _update_tax_rate_postcodes( $tax_rate_id, $postcodes ) {
@@ -821,7 +828,7 @@ class WC_Tax {
 	 * @since 2.3.0
 	 * @access private
 	 *
-	 * @param  int $tax_rate_id
+	 * @param  int    $tax_rate_id
 	 * @param  string $cities
 	 * @return string
 	 */
@@ -842,8 +849,8 @@ class WC_Tax {
 	 * @since 2.3.0
 	 * @access private
 	 *
-	 * @param  int $tax_rate_id
-	 * @param string $type
+	 * @param  int    $tax_rate_id
+	 * @param  string $type
 	 * @return string
 	 */
 	private static function _update_tax_rate_locations( $tax_rate_id, $values, $type ) {
@@ -877,8 +884,8 @@ class WC_Tax {
 	 * @since 2.3.0
 	 * @access private
 	 *
-	 * @param  array  $values array of values
-	 * @return array expanded values
+	 * @param  array $values array of values
+	 * @return array         expanded values
 	 */
 	private static function _get_expanded_numeric_ranges_from_array( $values = array() ) {
 		$expanded = array();
@@ -888,7 +895,7 @@ class WC_Tax {
 
 				for ( $expanded_value = $parts[0]; $expanded_value <= $parts[1]; $expanded_value ++ ) {
 					if ( strlen( $expanded_value ) < strlen( $parts[0] ) ) {
-						$expanded_value = str_pad( $expanded_value, strlen( $parts[0] ), "0", STR_PAD_LEFT );
+						$expanded_value = str_pad( $expanded_value, strlen( $parts[0] ), '0', STR_PAD_LEFT );
 					}
 					$expanded[] = $expanded_value;
 				}
@@ -907,8 +914,8 @@ class WC_Tax {
 	 * @since 2.3.0
 	 * @access private
 	 *
-	 * @param  string  $postcode array of values
-	 * @return string[] Array of postcodes with wildcards
+	 * @param  string   $postcode array of values
+	 * @return string[]           Array of postcodes with wildcards
 	 */
 	private static function _get_wildcard_postcodes( $postcode ) {
 		$postcodes         = array( '*', strtoupper( $postcode ), strtoupper( $postcode ) . '*' );
@@ -917,7 +924,7 @@ class WC_Tax {
 
 		for ( $i = 0; $i < $postcode_length; $i ++ ) {
 			$wildcard_postcode = substr( $wildcard_postcode, 0, -1 );
-			$postcodes[] = $wildcard_postcode . '*';
+			$postcodes[]       = $wildcard_postcode . '*';
 		}
 		return $postcodes;
 	}
@@ -925,7 +932,7 @@ class WC_Tax {
 	/**
 	 * Used by admin settings page.
 	 *
-	 * @param string $tax_class
+	 * @param  string            $tax_class
 	 *
 	 * @return array|null|object
 	 */
@@ -956,5 +963,6 @@ class WC_Tax {
 
 		return $rates;
 	}
+
 }
 WC_Tax::init();

@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Note: get_option( 'woocommerce_lock_down_admin', true ) is a deprecated option here for backwards compat. Defaults to true.
  *
  * @access public
- * @param bool $show_admin_bar
+ * @param  bool $show_admin_bar
  * @return bool
  */
 function wc_disable_admin_bar( $show_admin_bar ) {
@@ -32,17 +32,15 @@ function wc_disable_admin_bar( $show_admin_bar ) {
 }
 add_filter( 'show_admin_bar', 'wc_disable_admin_bar', 10, 1 );
 
-
 /**
  * Create a new customer.
  *
- * @param  string $email
- * @param  string $username
- * @param  string $password
- * @return int|WP_Error on failure, Int (user ID) on success
+ * @param  string       $email
+ * @param  string       $username
+ * @param  string       $password
+ * @return int|WP_Error           on failure, Int (user ID) on success
  */
 function wc_create_new_customer( $email, $username = '', $password = '' ) {
-
 	// Check the e-mail address
 	if ( empty( $email ) || ! is_email( $email ) ) {
 		return new WP_Error( 'registration-error-invalid-email', __( 'Please provide a valid email address.', 'woocommerce' ) );
@@ -61,8 +59,9 @@ function wc_create_new_customer( $email, $username = '', $password = '' ) {
 			return new WP_Error( 'registration-error-invalid-username', __( 'Please enter a valid account username.', 'woocommerce' ) );
 		}
 
-		if ( username_exists( $username ) )
+		if ( username_exists( $username ) ) {
 			return new WP_Error( 'registration-error-username-exists', __( 'An account is already registered with that username. Please choose another.', 'woocommerce' ) );
+		}
 	} else {
 
 		$username = sanitize_user( current( explode( '@', $email ) ), true );
@@ -79,7 +78,7 @@ function wc_create_new_customer( $email, $username = '', $password = '' ) {
 
 	// Handle password creation
 	if ( 'yes' === get_option( 'woocommerce_registration_generate_password' ) && empty( $password ) ) {
-		$password = wp_generate_password();
+		$password           = wp_generate_password();
 		$password_generated = true;
 
 	} elseif ( empty( $password ) ) {
@@ -96,8 +95,9 @@ function wc_create_new_customer( $email, $username = '', $password = '' ) {
 
 	$validation_errors = apply_filters( 'woocommerce_registration_errors', $validation_errors, $username, $email );
 
-	if ( $validation_errors->get_error_code() )
+	if ( $validation_errors->get_error_code() ) {
 		return $validation_errors;
+	}
 
 	$new_customer_data = apply_filters( 'woocommerce_new_customer_data', array(
 		'user_login' => $username,
@@ -193,9 +193,9 @@ add_action( 'woocommerce_order_status_completed', 'wc_paying_customer' );
 
 /**
  * Checks if a user (by email or ID or both) has bought an item.
- * @param string $customer_email
- * @param int $user_id
- * @param int $product_id
+ * @param  string $customer_email
+ * @param  int    $user_id
+ * @param  int    $product_id
  * @return bool
  */
 function wc_customer_bought_product( $customer_email, $user_id, $product_id ) {
@@ -246,9 +246,9 @@ function wc_customer_bought_product( $customer_email, $user_id, $product_id ) {
  * Checks if a user has a certain capability.
  *
  * @access public
- * @param array $allcaps
- * @param array $caps
- * @param array $args
+ * @param  array $allcaps
+ * @param  array $caps
+ * @param  array $args
  * @return bool
  */
 function wc_customer_has_capability( $allcaps, $caps, $args ) {
@@ -313,11 +313,11 @@ add_filter( 'user_has_cap', 'wc_customer_has_capability', 10, 3 );
  * @param  array $roles
  * @return array
  */
-function wc_modify_editable_roles( $roles ){
+function wc_modify_editable_roles( $roles ) {
 	if ( ! current_user_can( 'administrator' ) ) {
-		unset( $roles[ 'administrator' ] );
+		unset( $roles['administrator'] );
 	}
-    return $roles;
+	return $roles;
 }
 add_filter( 'editable_roles', 'wc_modify_editable_roles' );
 
@@ -326,10 +326,10 @@ add_filter( 'editable_roles', 'wc_modify_editable_roles' );
  *
  * $args[0] will be the user being edited in this case.
  *
- * @param  array $caps Array of caps
- * @param  string $cap Name of the cap we are checking
- * @param  int $user_id ID of the user being checked against
- * @param  array $args
+ * @param  array  $caps    Array of caps
+ * @param  string $cap     Name of the cap we are checking
+ * @param  int    $user_id ID of the user being checked against
+ * @param  array  $args
  * @return array
  */
 function wc_modify_map_meta_cap( $caps, $cap, $user_id, $args ) {
@@ -354,7 +354,7 @@ add_filter( 'map_meta_cap', 'wc_modify_map_meta_cap', 10, 4 );
 /**
  * Get customer available downloads.
  *
- * @param int $customer_id Customer/User ID
+ * @param  int   $customer_id Customer/User ID
  * @return array
  */
 function wc_get_customer_available_downloads( $customer_id ) {
@@ -446,7 +446,7 @@ function wc_get_customer_available_downloads( $customer_id ) {
 				'order_id'            => $order->id,
 				'order_key'           => $order->order_key,
 				'downloads_remaining' => $result->downloads_remaining,
-				'access_expires' 	  => $result->access_expires,
+				'access_expires'      => $result->access_expires,
 				'file'                => $download_file
 			);
 
@@ -459,7 +459,7 @@ function wc_get_customer_available_downloads( $customer_id ) {
 
 /**
  * Get total spent by customer.
- * @param  int $user_id
+ * @param  int    $user_id
  * @return string
  */
 function wc_get_customer_total_spent( $user_id ) {
@@ -501,7 +501,7 @@ function wc_get_customer_order_count( $user_id ) {
 
 			WHERE   meta.meta_key       = '_customer_user'
 			AND     posts.post_type     IN ('" . implode( "','", wc_get_order_types( 'order-count' ) ) . "')
-			AND     posts.post_status   IN ('" . implode( "','", array_keys( wc_get_order_statuses() ) )  . "')
+			AND     posts.post_status   IN ('" . implode( "','", array_keys( wc_get_order_statuses() ) ) . "')
 			AND     meta_value          = $user_id
 		" );
 
@@ -525,7 +525,7 @@ add_action( 'deleted_user', 'wc_reset_order_customer_id_on_deleted_user' );
 
 /**
  * Get review verification status.
- * @param  int $comment_id
+ * @param  int  $comment_id
  * @return bool
  */
 function wc_review_is_from_verified_owner( $comment_id ) {
@@ -614,7 +614,7 @@ function wc_set_user_last_update_time( $user_id ) {
  * Get customer saved payment methods list.
  *
  * @since 2.6.0
- * @param int $customer_id
+ * @param  int   $customer_id
  * @return array
  */
 function wc_get_customer_saved_methods_list( $customer_id ) {
