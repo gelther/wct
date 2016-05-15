@@ -217,7 +217,7 @@ class WC_Coupon {
 				$this->$key = $this->format_array( $this->$key );
 			} elseif ( in_array( $key, array( 'usage_limit', 'usage_limit_per_user', 'limit_usage_to_x_items', 'usage_count' ) ) ) {
 				$this->$key = absint( $this->$key );
-			} elseif( 'expiry_date' === $key ) {
+			} elseif ( 'expiry_date' === $key ) {
 				$this->expiry_date = $this->expiry_date && ! is_numeric( $this->expiry_date ) ? strtotime( $this->expiry_date ) : $this->expiry_date;
 			}
 		}
