@@ -40,8 +40,8 @@ abstract class WC_Payment_Gateway_eCheck extends WC_Payment_Gateway {
 	 * @since 2.6.0
 	 */
 	public function form() {
-		$html           = '';
-		$fields         = array();
+		$html   = '';
+		$fields = array();
 
 		$default_fields = array(
 			'routing-number' => '<p class="form-row form-row-first">
