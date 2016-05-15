@@ -25,13 +25,13 @@ $tabs        = array(
 			}
 		?>
 	</nav>
-	<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>	
+	<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 	<?php
 		switch ( $current_tab ) {
-			case "tools" :
+			case 'tools' :
 				WC_Admin_Status::status_tools();
 			break;
-			case "logs" :
+			case 'logs' :
 				WC_Admin_Status::status_logs();
 			break;
 			default :
