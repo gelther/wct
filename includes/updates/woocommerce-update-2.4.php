@@ -43,7 +43,7 @@ foreach ( $shipping_methods as $flat_rate_option_key => $shipping_method ) {
 
 		foreach ( WC()->shipping->get_shipping_classes() as $shipping_class ) {
 			$rate_key                       = 'class_cost_' . $shipping_class->slug;
-			$math_cost_strings[ $rate_key ] = $math_cost_strings[ 'no_class_cost' ];
+			$math_cost_strings[ $rate_key ] = $math_cost_strings['no_class_cost'];
 		}
 
 		if ( $flat_rates = array_filter( (array) get_option( $flat_rate_option_key, array() ) ) ) {
@@ -67,7 +67,7 @@ foreach ( $shipping_methods as $flat_rate_option_key => $shipping_method ) {
 			}
 		}
 
-		$math_cost_strings[ 'cost' ][] = $shipping_method->get_option( 'cost_per_order' );
+		$math_cost_strings['cost'][] = $shipping_method->get_option( 'cost_per_order' );
 
 		// Save settings
 		foreach ( $math_cost_strings as $option_id => $math_cost_string ) {
@@ -89,7 +89,7 @@ $apps_keys = array();
 
 // Get user data
 foreach ( $api_users as $_user ) {
-	$user = get_userdata( $_user->user_id );
+	$user        = get_userdata( $_user->user_id );
 	$apps_keys[] = array(
 		'user_id'         => $user->ID,
 		'permissions'     => $user->woocommerce_api_key_permissions,
