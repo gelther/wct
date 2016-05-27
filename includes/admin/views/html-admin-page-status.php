@@ -25,7 +25,7 @@ $tabs        = array(
 			}
 		?>
 	</nav>
-	<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>	
+	<h1 class="screen-reader-text"><?php echo esc_html( $tabs[ $current_tab ] ); ?></h1>
 	<?php
 		switch ( $current_tab ) {
 			case "tools" :
