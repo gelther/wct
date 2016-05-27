@@ -8,7 +8,7 @@
  * @category    Admin
  * @package     WooCommerce/Admin
  * @version     2.4.0
-*/
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -55,17 +55,17 @@ class WC_Admin_Setup_Wizard {
 			return;
 		}
 		$this->steps = array(
-			'introduction' => array(
+			'introduction'   => array(
 				'name'    =>  __( 'Introduction', 'woocommerce' ),
 				'view'    => array( $this, 'wc_setup_introduction' ),
 				'handler' => ''
 			),
-			'pages' => array(
+			'pages'          => array(
 				'name'    =>  __( 'Page Setup', 'woocommerce' ),
 				'view'    => array( $this, 'wc_setup_pages' ),
 				'handler' => array( $this, 'wc_setup_pages_save' )
 			),
-			'locale' => array(
+			'locale'         => array(
 				'name'    =>  __( 'Store Locale', 'woocommerce' ),
 				'view'    => array( $this, 'wc_setup_locale' ),
 				'handler' => array( $this, 'wc_setup_locale_save' )
@@ -75,19 +75,19 @@ class WC_Admin_Setup_Wizard {
 				'view'    => array( $this, 'wc_setup_shipping_taxes' ),
 				'handler' => array( $this, 'wc_setup_shipping_taxes_save' ),
 			),
-			'payments' => array(
+			'payments'       => array(
 				'name'    =>  __( 'Payments', 'woocommerce' ),
 				'view'    => array( $this, 'wc_setup_payments' ),
 				'handler' => array( $this, 'wc_setup_payments_save' ),
 			),
-			'next_steps' => array(
+			'next_steps'     => array(
 				'name'    =>  __( 'Ready!', 'woocommerce' ),
 				'view'    => array( $this, 'wc_setup_ready' ),
 				'handler' => ''
 			)
 		);
-		$this->step = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) );
-		$suffix     = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$this->step  = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) );
+		$suffix      = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_register_script( 'jquery-blockui', WC()->plugin_url() . '/assets/js/jquery-blockui/jquery.blockUI' . $suffix . '.js', array( 'jquery' ), '2.70', true );
 		wp_register_script( 'select2', WC()->plugin_url() . '/assets/js/select2/select2' . $suffix . '.js', array( 'jquery' ), '3.5.2' );
@@ -277,10 +277,10 @@ class WC_Admin_Setup_Wizard {
 	 * Locale settings.
 	 */
 	public function wc_setup_locale() {
-		$user_location  = WC_Geolocation::geolocate_ip();
-		$country        = ! empty( $user_location['country'] ) ? $user_location['country'] : 'US';
-		$state          = ! empty( $user_location['state'] ) ? $user_location['state'] : '*';
-		$state          = 'US' === $country && '*' === $state ? 'AL' : $state;
+		$user_location = WC_Geolocation::geolocate_ip();
+		$country       = ! empty( $user_location['country'] ) ? $user_location['country'] : 'US';
+		$state         = ! empty( $user_location['state'] ) ? $user_location['state'] : '*';
+		$state         = 'US' === $country && '*' === $state ? 'AL' : $state;
 
 		// Defaults
 		$currency       = get_option( 'woocommerce_currency', 'GBP' );
@@ -622,10 +622,10 @@ class WC_Admin_Setup_Wizard {
 	public function wc_setup_payments_save() {
 		check_admin_referer( 'wc-setup' );
 
-		$paypal_settings            = array_filter( (array) get_option( 'woocommerce_paypal_settings', array() ) );
-		$cheque_settings            = array_filter( (array) get_option( 'woocommerce_cheque_settings', array() ) );
-		$cod_settings               = array_filter( (array) get_option( 'woocommerce_cod_settings', array() ) );
-		$bacs_settings              = array_filter( (array) get_option( 'woocommerce_bacs_settings', array() ) );
+		$paypal_settings = array_filter( (array) get_option( 'woocommerce_paypal_settings', array() ) );
+		$cheque_settings = array_filter( (array) get_option( 'woocommerce_cheque_settings', array() ) );
+		$cod_settings    = array_filter( (array) get_option( 'woocommerce_cod_settings', array() ) );
+		$bacs_settings   = array_filter( (array) get_option( 'woocommerce_bacs_settings', array() ) );
 
 		$paypal_settings['enabled'] = ! empty( $_POST['woocommerce_paypal_email'] ) ? 'yes' : 'no';
 		$cheque_settings['enabled'] = isset( $_POST['woocommerce_enable_cheque'] ) ? 'yes' : 'no';
@@ -668,7 +668,7 @@ class WC_Admin_Setup_Wizard {
 		shuffle( $this->tweets );
 		?>
 		<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.woothemes.com/woocommerce/" data-text="<?php echo esc_attr( $this->tweets[0] ); ?>" data-via="WooThemes" data-size="large">Tweet</a>
-		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)) {js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 		<h1><?php _e( 'Your Store is Ready!', 'woocommerce' ); ?></h1>
 
@@ -701,6 +701,7 @@ class WC_Admin_Setup_Wizard {
 		</div>
 		<?php
 	}
+
 }
 
 new WC_Admin_Setup_Wizard();
