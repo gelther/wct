@@ -129,7 +129,7 @@ foreach ( $update_variations as $variation ) {
 }
 
 // Update taxonomy names with correct sanitized names
-$attribute_taxonomies = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "woocommerce_attribute_taxonomies" );
+$attribute_taxonomies = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->prefix . 'woocommerce_attribute_taxonomies' );
 
 foreach ( $attribute_taxonomies as $attribute_taxonomy ) {
 	$sanitized_attribute_name = wc_sanitize_taxonomy_name( $attribute_taxonomy->attribute_name );
