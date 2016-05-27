@@ -23,13 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <div class="wc-shipping-zone-method-selector">
         			<select name="add_method_id">
         				<?php
-        					foreach ( $shipping_methods as $method ) {
-        						if ( ! $method->supports( 'shipping-zones' ) ) {
-        							continue;
-                                }
-        						echo '<option value="' . esc_attr( $method->id ) . '">' . esc_attr( $method->title ) . '</li>';
-        					}
-        				?>
+							foreach ( $shipping_methods as $method ) {
+								if ( ! $method->supports( 'shipping-zones' ) ) {
+									continue;
+								}
+								echo '<option value="' . esc_attr( $method->id ) . '">' . esc_attr( $method->title ) . '</li>';
+							}
+						?>
         			</select>
         			<input type="submit" class="button wc-shipping-zone-add-method" value="<?php esc_attr_e( 'Add shipping method', 'woocommerce' ); ?>" />
         		</div>
