@@ -42,7 +42,7 @@ blacklist:
     directories:
         - dummy-data
         - apigen/theme-woocommerce
-        - assets/fonts
+        - assets/fonts/
         - assets/images
         - includes/libraries
         - includes/gateways/simplify-commerce/includes
